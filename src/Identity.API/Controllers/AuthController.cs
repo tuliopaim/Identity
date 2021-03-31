@@ -14,15 +14,17 @@ namespace Identity.API.Controllers
         private readonly INotificador _notificador;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IJwtService _jwtService;
 
         public AuthController(
               SignInManager<ApplicationUser> signInManager,
               UserManager<ApplicationUser> userManager,
-              INotificador notificador) : base(notificador)
+              INotificador notificador, IJwtService jwtService) : base(notificador)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _notificador = notificador;
+            _jwtService = jwtService;
         }
 
         [HttpPost("registrar")]
@@ -35,10 +37,10 @@ namespace Identity.API.Controllers
             {
                 Name = registerUser.Name,
                 UserName = registerUser.Email,
-                Email = registerUser.Email
+                Email = registerUser.Email,
             };
 
-            var result = await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
 
             if (result.Succeeded)
             {
@@ -67,7 +69,8 @@ namespace Identity.API.Controllers
 
             if (result.Succeeded)
             {
-                return CustomResponse();
+                var responseViewModel = await _jwtService.GerarReponseComToken(loginUser.Email);
+                return CustomResponse(responseViewModel);
             }
 
             NotificarErro("Email ou Senha incorretos");

@@ -43,6 +43,11 @@ namespace Identity.API.Controllers
                 errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
             });
         }
+        protected ActionResult CustomResponse(ModelStateDictionary modelState)
+        {
+            if (!modelState.IsValid) NotificarErroModelInvalida(modelState);
+            return CustomResponse();
+        }
 
         protected void NotificarErroModelInvalida(ModelStateDictionary modelState)
         {
