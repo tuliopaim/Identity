@@ -28,6 +28,7 @@ namespace Identity.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityConfiguration(Configuration);
+            services.ResolveDependences();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
