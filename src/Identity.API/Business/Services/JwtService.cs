@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Identity.API.Business.Interfaces;
 using Identity.API.Entities;
-using Identity.API.Extensions;
 using Identity.API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
