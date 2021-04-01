@@ -11,7 +11,6 @@ namespace Identity.API.Controllers
     [Route("api")]
     public class AuthController : MainController
     {
-        private readonly INotificador _notificador;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtService _jwtService;
@@ -23,7 +22,6 @@ namespace Identity.API.Controllers
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _notificador = notificador;
             _jwtService = jwtService;
         }
 
@@ -75,6 +73,26 @@ namespace Identity.API.Controllers
 
             NotificarErro("Email ou Senha incorretos");
             return CustomResponse(loginUser);
+        }
+
+        [HttpPost("alterar-senha")]
+        public async Task<IActionResult> AlterarSenha([FromBody] ChangePasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            var user = await _userManager.FindByNameAsync(viewModel.Email);
+
+            var result = await _userManager
+                .ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return CustomResponse("Senha alterada com sucesso!");
+            }
+
+            NotificarErro("Senha atual incorreta");
+            return CustomResponse();
         }
     }
 }
