@@ -1,4 +1,4 @@
-﻿using Identity.API.Entities;
+﻿using Identity.API.Business.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

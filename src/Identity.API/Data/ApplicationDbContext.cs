@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Identity.API.Entities;
+using Identity.API.Business.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

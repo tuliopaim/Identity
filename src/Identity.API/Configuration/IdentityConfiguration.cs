@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
+using Identity.API.Business.Entities;
 using Identity.API.Data;
-using Identity.API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

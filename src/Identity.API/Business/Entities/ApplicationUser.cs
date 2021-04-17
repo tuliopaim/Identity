@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.API.Entities
+namespace Identity.API.Business.Entities
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
