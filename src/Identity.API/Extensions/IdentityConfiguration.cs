@@ -1,6 +1,7 @@
 ﻿using System.Text;
-using Identity.API.Business.Entities;
-using Identity.API.Data;
+using Identity.Business.Entities;
+using Identity.Business.ViewModels;
+using Identity.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

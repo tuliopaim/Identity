@@ -1,7 +1,7 @@
-﻿using Identity.API.Business.Interfaces;
-using Identity.API.Business.Notificacoes;
-using Identity.API.Business.Services;
-using Identity.API.Data;
+﻿using Identity.Business.Interfaces;
+using Identity.Business.Notificacoes;
+using Identity.Business.Services;
+using Identity.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.API.Extensions

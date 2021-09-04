@@ -1,10 +1,8 @@
 ﻿using System.Security.Claims;
-using Identity.API.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 
-namespace Identity.API.Extensions
+namespace Identity.API.Extensions.Attributes
 {
     public class ClaimsRequirementFilter : IAuthorizationFilter
     {

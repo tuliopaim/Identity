@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Identity.API.Business.Entities;
-using Identity.API.Business.Interfaces;
-using Identity.API.ViewModels;
+﻿using System.Threading.Tasks;
+using Identity.Business.Entities;
+using Identity.Business.Interfaces;
+using Identity.Business.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
