@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210904040245_AlteraNomeDasTabelasDoIdentity")]
+    [Migration("20210904135742_AlteraNomeDasTabelasDoIdentity")]
     partial class AlteraNomeDasTabelasDoIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,33 @@ namespace Identity.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("Identity.API.Business.Entities.Perfil", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("Perfil");
+                });
 
             modelBuilder.Entity("Identity.API.Business.Entities.PerfilPermissao", b =>
                 {
@@ -152,33 +179,6 @@ namespace Identity.API.Migrations
                     b.ToTable("UsuarioPermissao");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
@@ -219,23 +219,10 @@ namespace Identity.API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Identity.API.Business.Entities.Perfil", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>");
-
-                    b.ToTable("Perfil");
-                });
-
             modelBuilder.Entity("Identity.API.Business.Entities.PerfilPermissao", b =>
                 {
                     b.HasOne("Identity.API.Business.Entities.Perfil", "Perfil")
                         .WithMany("PerfilPermissoes")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -247,12 +234,6 @@ namespace Identity.API.Migrations
                 {
                     b.HasOne("Identity.API.Business.Entities.Perfil", "Perfil")
                         .WithMany("PerfilUsuarios")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -299,11 +280,9 @@ namespace Identity.API.Migrations
 
             modelBuilder.Entity("Identity.API.Business.Entities.Perfil", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithOne()
-                        .HasForeignKey("Identity.API.Business.Entities.Perfil", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("PerfilPermissoes");
+
+                    b.Navigation("PerfilUsuarios");
                 });
 
             modelBuilder.Entity("Identity.API.Business.Entities.Usuario", b =>
@@ -311,13 +290,6 @@ namespace Identity.API.Migrations
                     b.Navigation("UsuarioPerfis");
 
                     b.Navigation("UsuarioPermissoes");
-                });
-
-            modelBuilder.Entity("Identity.API.Business.Entities.Perfil", b =>
-                {
-                    b.Navigation("PerfilPermissoes");
-
-                    b.Navigation("PerfilUsuarios");
                 });
 #pragma warning restore 612, 618
         }

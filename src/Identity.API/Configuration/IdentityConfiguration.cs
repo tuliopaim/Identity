@@ -19,7 +19,8 @@ namespace Identity.API.Configuration
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("Identity")));
 
-            services.AddIdentity<Usuario, IdentityRole<Guid>>()
+            services.AddIdentity<Usuario, Perfil>()
+                .AddRoles<Perfil>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
