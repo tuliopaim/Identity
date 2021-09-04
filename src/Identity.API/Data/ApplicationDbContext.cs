@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.API.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Usuario, IdentityRole<Guid>, Guid>
+    public class ApplicationDbContext : IdentityDbContext<Usuario, IdentityRole<Guid>, Guid, 
+        UsuarioPermissao, UsuarioPerfil, IdentityUserLogin<Guid>, PerfilPermissao, IdentityUserToken<Guid>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { 
