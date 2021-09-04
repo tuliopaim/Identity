@@ -16,11 +16,11 @@ namespace Identity.API.Business.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Usuario> _userManager;
         private readonly AppSettings _appSettings;
 
         public JwtService(
-            UserManager<ApplicationUser> userManager,
+            UserManager<Usuario> userManager,
             IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
@@ -56,7 +56,7 @@ namespace Identity.API.Business.Services
 
         }
 
-        private void AdicionarClaims(IList<Claim> claims, ApplicationUser user, IList<string> userRoles)
+        private void AdicionarClaims(IList<Claim> claims, Usuario user, IList<string> userRoles)
         {
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));

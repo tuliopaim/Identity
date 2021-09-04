@@ -11,13 +11,13 @@ namespace Identity.API.Controllers
     [Route("api")]
     public class AuthController : MainController
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
         private readonly IJwtService _jwtService;
 
         public AuthController(
-              SignInManager<ApplicationUser> signInManager,
-              UserManager<ApplicationUser> userManager,
+              SignInManager<Usuario> signInManager,
+              UserManager<Usuario> userManager,
               INotificador notificador, IJwtService jwtService) : base(notificador)
         {
             _signInManager = signInManager;
@@ -31,7 +31,7 @@ namespace Identity.API.Controllers
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
-            var user = new ApplicationUser()
+            var user = new Usuario()
             {
                 Name = registerUser.Name,
                 UserName = registerUser.Email,
