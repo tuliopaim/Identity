@@ -15,6 +15,10 @@ namespace Identity.API.Data
             
         }
 
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Perfil> Perfis { get; set; }
+        public DbSet<UsuarioPerfil> UsuarioPerfis { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
