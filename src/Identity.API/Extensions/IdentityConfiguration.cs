@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Identity.API.Business.Entities;
 using Identity.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Identity.API.Configuration
+namespace Identity.API.Extensions
 {
     public static class IdentityConfiguration
     {
