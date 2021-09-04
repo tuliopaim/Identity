@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Identity.Business.ViewModels;
 
-namespace Identity.Business.Interfaces
+namespace Identity.Business.Interfaces.Services
 {
     public interface IJwtService
     {
