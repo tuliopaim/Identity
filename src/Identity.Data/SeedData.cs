@@ -65,6 +65,12 @@ namespace Identity.Data
                 Id = perfilAdminId,
                 Name = "admin"
             });
+
+            _context.Perfis.Add(new Perfil
+            {
+                Id = Guid.NewGuid(),
+                Name = "usuario"
+            });
         }
 
         private void SeedUsuarioPerfis(Guid adminId, Guid perfilAdminId)

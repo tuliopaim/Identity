@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Identity.Business.Entities;
 using Identity.Business.Interfaces;
+using Identity.Business.Interfaces.Services;
 using Identity.Business.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,8 @@ namespace Identity.API.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            await _userManager.AddToRoleAsync(user, "usuario");
 
             if (result.Succeeded)
             {
