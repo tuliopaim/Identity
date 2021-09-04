@@ -8,7 +8,7 @@ namespace Identity.Business.Entities
     {
         public virtual ICollection<UsuarioPerfil> PerfilUsuarios { get; set; }
         public virtual ICollection<PerfilPermissao> PerfilPermissoes { get; set; }
-
+        public DateTime DataDeCriacao { get; private set; }
         public bool Administrador => Name == "admin";
     }
 }

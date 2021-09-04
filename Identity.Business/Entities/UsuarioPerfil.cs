@@ -7,5 +7,6 @@ namespace Identity.Business.Entities
     {
         public virtual Perfil Perfil { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public DateTime DataDeCriacao { get; private set; }
     }
 }
