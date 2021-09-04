@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace Identity.Business.Services
+namespace Identity.API.Extensions.Attributes
 {
     public class CustomAuthorization
     {
