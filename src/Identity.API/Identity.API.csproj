@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Identity.Business\Identity.Business.csproj" />
+    <ProjectReference Include="..\Identity.Business\Identity.Business.csproj" />
     <ProjectReference Include="..\Identity.Data\Identity.Data.csproj" />
   </ItemGroup>
 
