@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.Business.Entities;
 using Identity.Business.Interfaces;
@@ -11,13 +12,16 @@ namespace Identity.Data
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Usuario> _userManager;
+        private readonly RoleManager<Perfil> _roleManager;
 
         public SeedData(
             ApplicationDbContext context,
-            UserManager<Usuario> userManager)
+            UserManager<Usuario> userManager, 
+            RoleManager<Perfil> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task Seed()
@@ -28,12 +32,8 @@ namespace Identity.Data
 
             try
             {
-                var adminId = Guid.NewGuid();
-                var perfilAdminId = Guid.NewGuid();
-
-                await SeedUsuarioAdmin(adminId);
-                SeedPerfis(perfilAdminId);
-                SeedUsuarioPerfis(adminId, perfilAdminId);
+                await SeedPerfis();
+                await SeedUsuarioAdmin();
 
                 await _context.SaveChangesAsync();
                 await tran.CommitAsync();
@@ -45,41 +45,35 @@ namespace Identity.Data
                 throw;
             }
         }
-
-        private async Task SeedUsuarioAdmin(Guid adminId)
+        
+        private async Task SeedPerfis()
         {
-            await _userManager.CreateAsync(new Usuario
+            await _roleManager.CreateAsync(new Perfil
             {
-                Id = adminId,
+                Name = "admin"
+            });
+
+            var perfilUsuario = new Perfil
+            {
+                Name = "usuario"
+            };
+
+            await _roleManager.CreateAsync(perfilUsuario);
+            await _roleManager.AddClaimAsync(perfilUsuario, new Claim("Claim1", "CRUD"));
+        }
+
+        private async Task SeedUsuarioAdmin()
+        {
+            var usuarioAdmin = new Usuario
+            {
                 Name = "admin",
                 UserName = "admin@admin.com",
                 Email = "admin@admin.com",
                 EmailConfirmed = true
-            }, "adm1nPassword");
-        }
+            };
 
-        private void SeedPerfis(Guid perfilAdminId)
-        {
-            _context.Perfis.Add(new Perfil
-            {
-                Id = perfilAdminId,
-                Name = "admin"
-            });
-
-            _context.Perfis.Add(new Perfil
-            {
-                Id = Guid.NewGuid(),
-                Name = "usuario"
-            });
-        }
-
-        private void SeedUsuarioPerfis(Guid adminId, Guid perfilAdminId)
-        {
-            _context.UsuarioPerfis.Add(new UsuarioPerfil
-            {
-                UserId = adminId,
-                RoleId = perfilAdminId
-            });
+            await _userManager.CreateAsync(usuarioAdmin, "adm1nPassword");
+            await _userManager.AddToRoleAsync(usuarioAdmin, "admin");
         }
     }
 }
