@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Identity.Business.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Identity.Data
 {
@@ -25,5 +29,33 @@ namespace Identity.Data
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            AtualizarDataDeCriacaoAtualizacao();
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void AtualizarDataDeCriacaoAtualizacao()
+        {
+            var entriesTracked = ChangeTracker
+                   .Entries()
+                   .Where(EntidadeAdicionadaOuEditada);
+
+            foreach (var entityEntry in entriesTracked)
+            {
+                entityEntry.Property("DataDeAtualizacao").CurrentValue = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    entityEntry.Property("DataDeCriacao").CurrentValue = DateTime.Now;
+                }
+            }
+        }
+
+        private static bool EntidadeAdicionadaOuEditada(EntityEntry entry) =>
+            entry.Entity is IEntidadeBase &&
+                (entry.State == EntityState.Added || entry.State == EntityState.Modified);
     }
 }
