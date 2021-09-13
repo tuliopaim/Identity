@@ -24,6 +24,7 @@ namespace Identity.Business.Entities
 
             ListToClaimValue(claimValues);
         }
+
         public DateTime DataDeCriacao { get; private set; }
         public virtual Perfil Perfil { get; set; }
 
