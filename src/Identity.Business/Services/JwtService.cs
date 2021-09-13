@@ -16,28 +16,28 @@ namespace Identity.Business.Services
 {
     public class JwtService : IJwtService
     {
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
-        private readonly RoleManager<Perfil> _roleManager;
         private readonly AppSettings _appSettings;
 
         public JwtService(
+            SignInManager<Usuario> signInManager,
             UserManager<Usuario> userManager,
-            RoleManager<Perfil> roleManager,
             IOptions<AppSettings> appSettings)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
-            _roleManager = roleManager;
             _appSettings = appSettings.Value;
         }
 
         public async Task<LoginResponseViewModel> GerarReponseComToken(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            var claims = (await _userManager.GetClaimsAsync(user))?.ToList();
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var usuario = await _userManager.FindByEmailAsync(email);
+            var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(usuario);
+            var claims = claimsPrincipal.Claims.ToList();
 
-            await AdicionarClaims(claims, user, userRoles);
-            
+            AdicionarClaims(claims);
+
             var encodedToken = CriarToken(claims);
 
             var response = new LoginResponseViewModel
@@ -46,8 +46,8 @@ namespace Identity.Business.Services
                 ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
                 UserToken = new UserTokenViewModel
                 {
-                    Id = user.Id,
-                    Email = user.Email,
+                    Id = usuario.Id,
+                    Email = usuario.Email,
                     Claims = claims?.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
                 }
             };
@@ -55,23 +55,11 @@ namespace Identity.Business.Services
             return response;
         }
 
-        private async Task AdicionarClaims(List<Claim> claims, Usuario user, IEnumerable<string> userRoles)
+        private static void AdicionarClaims(List<Claim> claims)
         {
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
-
-            foreach (var userRole in userRoles)
-            {
-                claims.Add(new Claim("role", userRole));
-
-                var role = await _roleManager.FindByNameAsync(userRole);
-                var roleClaims = await _roleManager.GetClaimsAsync(role);
-
-                if(roleClaims != null) claims.AddRange(roleClaims);
-            }
         }
 
         private string CriarToken(IEnumerable<Claim> claims)
