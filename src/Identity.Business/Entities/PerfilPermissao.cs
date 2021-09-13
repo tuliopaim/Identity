@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Business.Entities
 {
-    public class PerfilPermissao : IdentityRoleClaim<Guid>
+    public class PerfilPermissao : IdentityRoleClaim<Guid>, IEntidadeBase
     {
         public PerfilPermissao()
         { }
@@ -26,6 +26,7 @@ namespace Identity.Business.Entities
         }
 
         public DateTime DataDeCriacao { get; private set; }
+        public DateTime DataDeAtualizacao { get; private set; }
         public virtual Perfil Perfil { get; set; }
 
         public void AtualizarPermissoes(List<string> permissoes)
