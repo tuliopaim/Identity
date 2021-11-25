@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Identity.Business.Entities;
 using Identity.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;

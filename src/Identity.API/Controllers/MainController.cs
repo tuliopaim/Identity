@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Identity.Business.Interfaces;
+﻿using Identity.Business.Interfaces;
 using Identity.Business.Notificacoes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -26,7 +25,7 @@ namespace Identity.API.Controllers
             _notificador.AdicionarNotificacao(new Notificacao(mensagem));
         }
 
-        protected ActionResult CustomResponse(object result = null)
+        protected ActionResult CustomResponse(object? result = null)
         {
             if (OperacaoValida())
             {

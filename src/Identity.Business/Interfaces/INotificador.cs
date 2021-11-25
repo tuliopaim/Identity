@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Identity.Business.Notificacoes;
+﻿using Identity.Business.Notificacoes;
 
 namespace Identity.Business.Interfaces
 {

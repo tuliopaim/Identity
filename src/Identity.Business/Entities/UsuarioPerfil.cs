@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Business.Entities

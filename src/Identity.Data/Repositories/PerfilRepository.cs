@@ -1,8 +1,6 @@
 ﻿using Identity.Business.Entities;
 using Identity.Business.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 
 namespace Identity.Data.Repositories
 {
@@ -15,7 +13,7 @@ namespace Identity.Data.Repositories
             _context = context;
         }
 
-        public async Task<Perfil> ObterPerfilComPermissoes(Guid id)
+        public async Task<Perfil?> ObterPerfilComPermissoes(Guid id)
         {
             return await _context.Perfis
                 .AsNoTracking()

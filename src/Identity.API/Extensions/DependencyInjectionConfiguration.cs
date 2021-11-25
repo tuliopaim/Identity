@@ -5,7 +5,6 @@ using Identity.Business.Notificacoes;
 using Identity.Business.Services;
 using Identity.Data;
 using Identity.Data.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.API.Extensions
 {

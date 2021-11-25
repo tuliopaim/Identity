@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Identity.Business.ViewModels
+﻿namespace Identity.Business.ViewModels
 {
     public class UserTokenViewModel
     {

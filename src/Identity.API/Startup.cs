@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Identity.API.Extensions;
 using Identity.Business.Interfaces;
+using Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Identity.API
 {
@@ -30,8 +27,10 @@ namespace Identity.API
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ISeedData seed)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ISeedData seed, ApplicationDbContext dbContext)
         {
+            dbContext.Database.Migrate();
+
             seed.Seed().Wait();
 
             if (env.IsDevelopment())
