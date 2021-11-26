@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Identity.Business.ViewModels;
+﻿using Identity.Business.ViewModels;
 
 namespace Identity.Business.Interfaces.Services
 {

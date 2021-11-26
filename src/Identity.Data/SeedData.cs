@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Identity.Business.Entities;
 using Identity.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -59,7 +57,6 @@ namespace Identity.Data
             };
 
             await _roleManager.CreateAsync(perfilUsuario);
-            await _roleManager.AddClaimAsync(perfilUsuario, new Claim("Claim1", "CRUD"));
         }
 
         private async Task SeedUsuarioAdmin()

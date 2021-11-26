@@ -5,7 +5,6 @@ using Identity.Business.Notificacoes;
 using Identity.Business.Services;
 using Identity.Data;
 using Identity.Data.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.API.Extensions
 {
@@ -18,6 +17,9 @@ namespace Identity.API.Extensions
             services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPerfilService, PerfilService>();
+
+            services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

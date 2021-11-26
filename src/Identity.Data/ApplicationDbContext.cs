@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Identity.Business.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,8 +11,8 @@ namespace Identity.Data
         UsuarioPermissao, UsuarioPerfil, IdentityUserLogin<Guid>, PerfilPermissao, IdentityUserToken<Guid>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        { 
-            
+        {
+
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
@@ -27,7 +23,28 @@ namespace Identity.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Ignore<IdentityUserLogin<Guid>>();
+
+            DefineTiposPadrao(builder);
+
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        private static void DefineTiposPadrao(ModelBuilder builder)
+        {
+            foreach (var property in builder.Model.GetEntityTypes()
+                                .SelectMany(t => t.GetProperties())
+                                .Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(string)))
+            {
+                if (property.ClrType == typeof(DateTime))
+                {
+                    property.SetColumnType("date");
+                }
+                else
+                {
+                    property.SetColumnType("varchar(200)");
+                }
+            }
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -40,13 +57,15 @@ namespace Identity.Data
         private void AtualizarDataDeCriacaoAtualizacao()
         {
             var entriesTracked = ChangeTracker
-                   .Entries()
-                   .Where(EntidadeAdicionadaOuEditada);
+                .Entries()
+                .Where(EntidadeAdicionadaOuEditada);
 
             foreach (var entityEntry in entriesTracked)
             {
-                entityEntry.Property("DataDeAtualizacao").CurrentValue = DateTime.Now;
-
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    entityEntry.Property("DataDeAtualizacao").CurrentValue = DateTime.Now;
+                }
                 if (entityEntry.State == EntityState.Added)
                 {
                     entityEntry.Property("DataDeCriacao").CurrentValue = DateTime.Now;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Identity.Business.Interfaces;
+﻿using Identity.Business.Interfaces;
 
 namespace Identity.Business.Notificacoes
 {

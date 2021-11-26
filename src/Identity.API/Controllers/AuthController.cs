@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Identity.Business.Entities;
+﻿using Identity.Business.Entities;
 using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Services;
 using Identity.Business.ViewModels;

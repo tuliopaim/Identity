@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Identity.Business.Entities
+﻿namespace Identity.Business.Entities
 {
     public interface IEntidadeBase
     {
