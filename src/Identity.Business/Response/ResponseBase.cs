@@ -6,9 +6,11 @@ public class ResponseBase
 
     public bool Valido => !Erros.Any();
 
-    public void AddErrors(params string[] errors)
+    public virtual ResponseBase AddErrors(params string[] errors)
     {
         Erros.AddRange(errors);
+
+        return this;
     }
 
     public static ResponseBase Error(params string[] errors)

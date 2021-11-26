@@ -5,6 +5,13 @@
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public UserTokenResponse UserToken { get; set; }
+
+        public override LoginResponse AddErrors(params string[] errors)
+        {
+            base.AddErrors(errors);
+
+            return this;
+        }
     }
 
     public class UserTokenResponse
