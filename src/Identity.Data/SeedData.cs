@@ -57,7 +57,6 @@ namespace Identity.Data
             };
 
             await _roleManager.CreateAsync(perfilUsuario);
-            await _roleManager.AddClaimAsync(perfilUsuario, new Claim("Claim1", "CRUD"));
         }
 
         private async Task SeedUsuarioAdmin()
