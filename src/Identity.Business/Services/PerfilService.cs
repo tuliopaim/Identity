@@ -2,7 +2,7 @@
 using Identity.Business.Interfaces.Services;
 using Identity.Business.Interfaces.Repositories;
 
-namespace Identity.Data.Repositories
+namespace Identity.Business.Services
 {
     public class PerfilService : IPerfilService
     {

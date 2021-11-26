@@ -3,9 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Identity.Business.Entities;
 using Identity.Business.Interfaces.Services;
-using Identity.Business.ViewModels;
+using Identity.Business.Response;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Business.Services
@@ -14,37 +14,44 @@ namespace Identity.Business.Services
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
-        private readonly AppSettings _appSettings;
+        private readonly IConfiguration _configuration;
 
         public JwtService(
             SignInManager<Usuario> signInManager,
             UserManager<Usuario> userManager,
-            IOptions<AppSettings> appSettings)
+            IConfiguration configuration)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _appSettings = appSettings.Value;
+            _configuration = configuration;
         }
 
-        public async Task<LoginResponseViewModel> GerarReponseComToken(string email)
+        public async Task<LoginResponse> GerarReponseComToken(string email)
         {
             var usuario = await _userManager.FindByEmailAsync(email);
             var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(usuario);
+
             var claims = claimsPrincipal.Claims.ToList();
 
             AdicionarClaims(claims);
 
-            var encodedToken = CriarToken(claims);
+            var expiracao = int.Parse(_configuration["AppSettings:ExpiracaoHoras"]);
 
-            var response = new LoginResponseViewModel
+            var encodedToken = CriarToken(claims, expiracao);
+
+            var response = new LoginResponse
             {
                 AccessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
-                UserToken = new UserTokenViewModel
+                ExpiresIn = TimeSpan.FromHours(expiracao).TotalSeconds,
+                UserToken = new UserTokenResponse
                 {
                     Id = usuario.Id,
                     Email = usuario.Email,
-                    Claims = claims?.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                    Claims = claims.Select(c => new ClaimResponse
+                    {
+                        Type = c.Type,
+                        Value = c.Value
+                    })
                 }
             };
 
@@ -58,16 +65,20 @@ namespace Identity.Business.Services
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
         }
 
-        private string CriarToken(IEnumerable<Claim> claims)
+        private string CriarToken(IEnumerable<Claim> claims, int expiracao)
         {
+            var secrect = _configuration["AppSettings:Secret"];
+            var emissor = _configuration["AppSettings:Emissor"];
+            var validoEm = _configuration["AppSettings:ValidoEm"];
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(secrect);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = emissor,
+                Audience = validoEm,
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
+                Expires = DateTime.UtcNow.AddHours(expiracao),
                 SigningCredentials =
                     new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });

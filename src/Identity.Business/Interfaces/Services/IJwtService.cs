@@ -1,9 +1,9 @@
-﻿using Identity.Business.ViewModels;
+﻿using Identity.Business.Response;
 
 namespace Identity.Business.Interfaces.Services
 {
     public interface IJwtService
     {
-        Task<LoginResponseViewModel> GerarReponseComToken(string email);
+        Task<LoginResponse> GerarReponseComToken(string email);
     }
 }

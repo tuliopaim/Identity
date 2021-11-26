@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.Business.ViewModels
+namespace Identity.Business.Requests
 {
-    public class RegisterUserViewModel
+    public class RegisterUserRequest
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} está em formato inválido")]
