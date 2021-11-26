@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Identity.Business.Entities;
-using Identity.Business.ViewModels;
 using Identity.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +10,8 @@ namespace Identity.API.Extensions
 {
     public static class IdentityConfiguration
     {
-        public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
+        public static IServiceCollection AddIdentityConfiguration(
+            this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -37,16 +37,15 @@ namespace Identity.API.Extensions
             return services;
         }
 
-        public static IServiceCollection AddJwt(this IServiceCollection services,
+        public static IServiceCollection AddJwt(
+            this IServiceCollection services,
             IConfiguration configuration)
         {
+            var secrect = configuration["AppSettings:Secret"];
+            var emissor = configuration["AppSettings:Emissor"];
+            var validoEm = configuration["AppSettings:ValidoEm"];
 
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(secrect);
 
             services.AddAuthentication(x =>
             {
@@ -62,8 +61,8 @@ namespace Identity.API.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
+                    ValidAudience = validoEm,
+                    ValidIssuer = emissor
                 };
             });
 
