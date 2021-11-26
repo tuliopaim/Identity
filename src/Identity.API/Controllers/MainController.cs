@@ -12,17 +12,25 @@ namespace Identity.API.Controllers
 
         protected MainController(INotificador notificador)
         {
-            _notificador = notificador; 
+            _notificador = notificador;
         }
 
         protected bool OperacaoValida()
         {
             return !_notificador.TemNotificacao();
         }
-        
+
         protected void NotificarErro(string mensagem)
         {
             _notificador.AdicionarNotificacao(new Notificacao(mensagem));
+        }
+
+        protected void NotificarErros(List<string> mensagens)
+        {
+            foreach (var mensagem in mensagens)
+            {
+                _notificador.AdicionarNotificacao(new Notificacao(mensagem));
+            }
         }
 
         protected ActionResult CustomResponse(object? result = null)

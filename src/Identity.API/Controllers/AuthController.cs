@@ -1,7 +1,7 @@
 ﻿using Identity.Business.Entities;
 using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Services;
-using Identity.Business.ViewModels;
+using Identity.Business.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,87 +12,70 @@ namespace Identity.API.Controllers
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
+        private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
 
         public AuthController(
               SignInManager<Usuario> signInManager,
               UserManager<Usuario> userManager,
+              IUserService userService,
               INotificador notificador, IJwtService jwtService) : base(notificador)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _userService = userService;
             _jwtService = jwtService;
         }
 
         [HttpPost("registrar")]
-        public async Task<IActionResult> Registrar([FromBody]RegisterUserViewModel registerUser)
+        public async Task<IActionResult> Registrar([FromBody]RegisterUserRequest registerUser)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var user = new Usuario()
-            {
-                Name = registerUser.Name,
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
-            };
+            var response = await _userService.RegistrarUsuario(registerUser);
 
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
-
-            await _userManager.AddToRoleAsync(user, "usuario");
-
-            if (result.Succeeded)
+            if (response.Valido)
             {
                 return CustomResponse("Usuario criado com sucesso");
             }
 
-            foreach (var erro in result.Errors)
+            foreach (var erro in response.Erros)
             {
-                NotificarErro(erro.Description);
+                NotificarErro(erro);
             }
 
             return CustomResponse(registerUser);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserViewModel loginUser)
+        public async Task<IActionResult> Login([FromBody] LoginUserRequest loginUser)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(
-                loginUser.Email,
-                loginUser.Password,
-                false,
-                false);
+            var response = await _userService.AutenticarUsuario(loginUser);
 
-            if (result.Succeeded)
-            {
-                var responseViewModel = await _jwtService.GerarReponseComToken(loginUser.Email);
-                return CustomResponse(responseViewModel);
-            }
+            if (response.Valido) return CustomResponse(response);
 
-            NotificarErro("Email ou Senha incorretos");
+            NotificarErros(response.Erros);
+
             return CustomResponse(loginUser);
         }
 
         [HttpPost("alterar-senha")]
-        public async Task<IActionResult> AlterarSenha([FromBody] ChangePasswordViewModel viewModel)
+        public async Task<IActionResult> AlterarSenha([FromBody] AlterarSenhaRequest alterarSenha)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
-            var user = await _userManager.FindByNameAsync(viewModel.Email);
+            var response = await _userService.AlterarSenha(alterarSenha);
 
-            var result = await _userManager
-                .ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
-
-            if (result.Succeeded)
+            if (response.Valido)
             {
                 return CustomResponse("Senha alterada com sucesso!");
             }
 
-            NotificarErro("Senha atual incorreta");
+            NotificarErros(response.Erros);
+
             return CustomResponse();
         }
     }
