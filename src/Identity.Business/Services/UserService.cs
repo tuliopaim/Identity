@@ -22,7 +22,7 @@ public class UserService : IUserService
         _signInManager = signInManager;
     }
 
-    public async Task<ResponseBase> RegistrarUsuario(RegisterUserRequest registerUserRequest)
+    public async Task<ResponseBase> RegistrarUsuario(CriarUsuarioRequest registerUserRequest)
     {
         var user = new Usuario()
         {
@@ -43,7 +43,7 @@ public class UserService : IUserService
         return new ResponseBase();
     }
 
-    public async Task<LoginResponse> AutenticarUsuario(LoginUserRequest loginUserRequest)
+    public async Task<LoginResponse> AutenticarUsuario(LoginUsuarioRequest loginUserRequest)
     {
         var result = await _signInManager.PasswordSignInAsync(
             loginUserRequest.Email,
