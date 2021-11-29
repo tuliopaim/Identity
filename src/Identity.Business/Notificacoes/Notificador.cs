@@ -10,10 +10,31 @@ namespace Identity.Business.Notificacoes
         {
             _notificacoes = new List<Notificacao>();
         }
-
+        
         public void AdicionarNotificacao(Notificacao notificacao)
         {
             _notificacoes.Add(notificacao);
+        }
+
+        public void AdicionarNotificacao(string notificacao)
+        {
+            AdicionarNotificacao(new Notificacao(notificacao));
+        }
+
+        public void AdicionarNotificacoes(IEnumerable<string> notificacoes)
+        {
+            foreach (var notificacao in notificacoes)
+            {
+                AdicionarNotificacao(notificacao);
+            }
+        }
+
+        public void AdicionarNotificacoes(IEnumerable<Notificacao> notificacoes)
+        {
+            foreach (var notificacao in notificacoes)
+            {
+                AdicionarNotificacao(notificacao);
+            }
         }
 
         public List<Notificacao> ObterNotificacoes()
