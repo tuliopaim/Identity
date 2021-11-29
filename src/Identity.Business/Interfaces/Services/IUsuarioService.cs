@@ -3,7 +3,7 @@ using Identity.Business.Response;
 
 namespace Identity.Business.Interfaces.Services
 {
-    public interface IUserService
+    public interface IUsuarioService
     {
         Task RegistrarUsuario(CriarUsuarioRequest registerUserRequest);
         Task<LoginResponse> AutenticarUsuario(LoginUsuarioRequest loginUserRequest);

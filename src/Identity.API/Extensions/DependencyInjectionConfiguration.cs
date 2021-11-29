@@ -16,7 +16,7 @@ namespace Identity.API.Extensions
             services.AddScoped<ISeedData, SeedData>();
             services.AddScoped<IJwtService, JwtService>();
 
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPerfilService, PerfilService>();
 
             services.AddScoped<IPerfilRepository, PerfilRepository>();

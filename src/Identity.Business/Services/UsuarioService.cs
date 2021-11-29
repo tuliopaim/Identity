@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Business.Services;
 
-public class UserService : IUserService
+public class UsuarioService : IUsuarioService
 {
     private readonly INotificador _notificador;
     private readonly IJwtService _jwtService;
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
 
-    public UserService(
+    public UsuarioService(
         INotificador notificador,
         IJwtService jwtService,
         UserManager<Usuario> userManager,

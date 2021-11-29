@@ -12,13 +12,13 @@ namespace Identity.API.Controllers
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
-        private readonly IUserService _userService;
+        private readonly IUsuarioService _userService;
         private readonly IJwtService _jwtService;
 
         public UsuarioController(
               SignInManager<Usuario> signInManager,
               UserManager<Usuario> userManager,
-              IUserService userService,
+              IUsuarioService userService,
               INotificador notificador, IJwtService jwtService) : base(notificador)
         {
             _signInManager = signInManager;
