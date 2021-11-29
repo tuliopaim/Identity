@@ -1,9 +1,12 @@
-﻿namespace Identity.Business.Response;
+﻿using System.Text.Json.Serialization;
+
+namespace Identity.Business.Response;
 
 public class ResponseBase
 {
     public List<string> Erros { get; set; } = new List<string>();
 
+    [JsonIgnore]
     public bool Valido => !Erros.Any();
 
     public virtual ResponseBase AddErrors(params string[] errors)
