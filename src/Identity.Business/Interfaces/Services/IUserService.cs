@@ -5,8 +5,8 @@ namespace Identity.Business.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<ResponseBase> RegistrarUsuario(CriarUsuarioRequest registerUserRequest);
+        Task RegistrarUsuario(CriarUsuarioRequest registerUserRequest);
         Task<LoginResponse> AutenticarUsuario(LoginUsuarioRequest loginUserRequest);
-        Task<ResponseBase> AlterarSenha(AlterarSenhaRequest alterarSenhaRequest);
+        Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest);
     }
 }

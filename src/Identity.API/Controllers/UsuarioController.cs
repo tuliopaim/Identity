@@ -32,17 +32,7 @@ namespace Identity.API.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var response = await _userService.RegistrarUsuario(registerUser);
-
-            if (response.Valido)
-            {
-                return CustomResponse("Usuario criado com sucesso");
-            }
-
-            foreach (var erro in response.Erros)
-            {
-                NotificarErro(erro);
-            }
+            await _userService.RegistrarUsuario(registerUser);
 
             return CustomResponse(registerUser);
         }
@@ -54,11 +44,7 @@ namespace Identity.API.Controllers
 
             var response = await _userService.AutenticarUsuario(loginUser);
 
-            if (response.Valido) return CustomResponse(response);
-
-            NotificarErros(response.Erros);
-
-            return CustomResponse(loginUser);
+            return CustomResponse(response);
         }
 
         [HttpPost("alterar-senha")]
@@ -67,14 +53,7 @@ namespace Identity.API.Controllers
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
-            var response = await _userService.AlterarSenha(alterarSenha);
-
-            if (response.Valido)
-            {
-                return CustomResponse("Senha alterada com sucesso!");
-            }
-
-            NotificarErros(response.Erros);
+            await _userService.AlterarSenha(alterarSenha);
 
             return CustomResponse();
         }

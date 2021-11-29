@@ -1,4 +1,5 @@
 ﻿using Identity.Business.Entities;
+using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Services;
 using Identity.Business.Requests;
 using Identity.Business.Response;
@@ -8,21 +9,24 @@ namespace Identity.Business.Services;
 
 public class UserService : IUserService
 {
+    private readonly INotificador _notificador;
     private readonly IJwtService _jwtService;
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
 
     public UserService(
+        INotificador notificador,
         IJwtService jwtService,
         UserManager<Usuario> userManager,
         SignInManager<Usuario> signInManager)
     {
+        _notificador = notificador;
         _jwtService = jwtService;
         _userManager = userManager;
         _signInManager = signInManager;
     }
 
-    public async Task<ResponseBase> RegistrarUsuario(CriarUsuarioRequest registerUserRequest)
+    public async Task RegistrarUsuario(CriarUsuarioRequest registerUserRequest)
     {
         var user = new Usuario()
         {
@@ -35,15 +39,14 @@ public class UserService : IUserService
 
         if (!result.Succeeded)
         {
-            return ResponseBase.Error(result.Errors.Select(x => x.Description).ToArray());
+            _notificador.AdicionarNotificacoes(result.Errors.Select(x => x.Description));
+            return;
         }
 
         await _userManager.AddToRoleAsync(user, "usuario");
-
-        return new ResponseBase();
     }
 
-    public async Task<LoginResponse> AutenticarUsuario(LoginUsuarioRequest loginUserRequest)
+    public async Task<LoginResponse?> AutenticarUsuario(LoginUsuarioRequest loginUserRequest)
     {
         var result = await _signInManager.PasswordSignInAsync(
             loginUserRequest.Email,
@@ -58,14 +61,12 @@ public class UserService : IUserService
             return jwtResponse;
         }
 
-        var response = new LoginResponse();
+        _notificador.AdicionarNotificacao("Email ou Senha incorretos");
 
-        response.AddErrors("Email ou Senha incorretos");
-
-        return response;
+        return null;
     }
 
-    public async Task<ResponseBase> AlterarSenha(AlterarSenhaRequest alterarSenhaRequest)
+    public async Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest)
     {
         var user = await _userManager.FindByNameAsync(alterarSenhaRequest.Email);
 
@@ -74,8 +75,8 @@ public class UserService : IUserService
             alterarSenhaRequest.CurrentPassword,
             alterarSenhaRequest.NewPassword);
 
-        if(result.Succeeded) return new ResponseBase();
+        if(result.Succeeded) return;
 
-        return ResponseBase.Error(result.Errors.Select(x => x.Description).ToArray());
+        _notificador.AdicionarNotificacoes(result.Errors.Select(x => x.Description));
     }
 }
