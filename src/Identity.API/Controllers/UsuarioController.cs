@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.API.Controllers
 {
-    [Route("api")]
-    public class AuthController : MainController
+    [Route("api/usuario")]
+    public class UsuarioController : MainController
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
 
-        public AuthController(
+        public UsuarioController(
               SignInManager<Usuario> signInManager,
               UserManager<Usuario> userManager,
               IUserService userService,
@@ -28,7 +28,7 @@ namespace Identity.API.Controllers
         }
 
         [HttpPost("registrar")]
-        public async Task<IActionResult> Registrar([FromBody]RegisterUserRequest registerUser)
+        public async Task<IActionResult> Registrar([FromBody]CriarUsuarioRequest registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -48,7 +48,7 @@ namespace Identity.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserRequest loginUser)
+        public async Task<IActionResult> Login([FromBody] LoginUsuarioRequest loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
