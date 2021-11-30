@@ -2,6 +2,12 @@
 
 public enum PermissaoNomeEnum
 {
+    /// <summary>
+    /// Permissao no contexto de Usuario
+    /// </summary>
     Usuario = 0,
+    /// <summary>
+    /// Permissao no contexto de Perfil
+    /// </summary>
     Perfil = 1
 }
