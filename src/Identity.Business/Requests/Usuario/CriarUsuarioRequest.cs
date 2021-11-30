@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.Business.Requests
+namespace Identity.Business.Requests.Usuario
 {
     public class CriarUsuarioRequest
     {
@@ -18,5 +18,11 @@ namespace Identity.Business.Requests
 
         [Compare("Password", ErrorMessage = "As senhas não conferem")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class AssociarPerfisUsuarioRequest
+    {
+        public Guid UsuarioId { get; set; }
+        public List<Guid>? PerfisId { get; set; }
     }
 }

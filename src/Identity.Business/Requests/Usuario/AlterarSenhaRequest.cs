@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.Business.Requests
+namespace Identity.Business.Requests.Usuario
 {
     public class AlterarSenhaRequest
     {
