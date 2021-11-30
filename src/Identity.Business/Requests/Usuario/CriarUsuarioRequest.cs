@@ -19,10 +19,4 @@ namespace Identity.Business.Requests.Usuario
         [Compare("Password", ErrorMessage = "As senhas não conferem")]
         public string ConfirmPassword { get; set; }
     }
-
-    public class AssociarPerfisUsuarioRequest
-    {
-        public Guid UsuarioId { get; set; }
-        public List<Guid>? PerfisId { get; set; }
-    }
 }
