@@ -37,8 +37,8 @@ namespace Identity.API.Controllers
             return CustomResponse(registerUser);
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUsuarioRequest loginUser)
+        [HttpPost("autenticar")]
+        public async Task<IActionResult> Autenticar([FromBody] LoginUsuarioRequest loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
