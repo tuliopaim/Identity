@@ -9,11 +9,11 @@ namespace Identity.Business.Entities
         public DateTime DataDeAtualizacao { get; private set; }
         public virtual Perfil Perfil { get; set; }
 
-        public IEnumerable<PermissaoEnum> Permissoes
+        public IEnumerable<PermissaoValorEnum> Permissoes
         {
             get
             {
-                var enumClaimValues = Enum.GetValues(typeof(PermissaoEnum)).Cast<PermissaoEnum>();
+                var enumClaimValues = Enum.GetValues(typeof(PermissaoValorEnum)).Cast<PermissaoValorEnum>();
                 var permissoes = enumClaimValues.Where(p => ClaimValue.Contains(p.ToString()));
 
                 return permissoes;
