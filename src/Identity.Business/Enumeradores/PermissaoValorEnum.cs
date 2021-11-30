@@ -1,6 +1,6 @@
 ﻿namespace Identity.Business.Enumeradores;
 
-public enum PermissaoEnum
+public enum PermissaoValorEnum
 {
     C = 0,
     R = 1,
