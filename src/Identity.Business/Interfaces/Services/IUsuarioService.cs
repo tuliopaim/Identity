@@ -6,7 +6,7 @@ namespace Identity.Business.Interfaces.Services
     public interface IUsuarioService
     {
         Task RegistrarUsuario(CriarUsuarioRequest registerUserRequest);
-        Task<LoginResponse> AutenticarUsuario(LoginUsuarioRequest loginUserRequest);
+        Task<LoginResponse?> AutenticarUsuario(LoginUsuarioRequest loginUserRequest);
         Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest);
     }
 }
