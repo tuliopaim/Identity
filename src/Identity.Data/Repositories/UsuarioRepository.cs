@@ -2,11 +2,11 @@
 
 namespace Identity.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public UserRepository(ApplicationDbContext context)
+        public UsuarioRepository(ApplicationDbContext context)
         {
             _context = context;
         }   

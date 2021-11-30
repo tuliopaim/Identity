@@ -20,7 +20,7 @@ namespace Identity.API.Extensions
             services.AddScoped<IPerfilService, PerfilService>();
 
             services.AddScoped<IPerfilRepository, PerfilRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
             return services;
         }
