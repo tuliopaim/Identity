@@ -15,9 +15,9 @@ namespace Identity.Data
 
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Perfil> Perfis { get; set; }
-        public DbSet<UsuarioPerfil> UsuarioPerfis { get; set; }
+        public DbSet<Usuario> Usuarios => Set<Usuario>();
+        public DbSet<Perfil> Perfis => Set<Perfil>();
+        public DbSet<UsuarioPerfil> UsuarioPerfis  => Set<UsuarioPerfil>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,7 +38,7 @@ namespace Identity.Data
             {
                 if (property.ClrType == typeof(DateTime))
                 {
-                    property.SetColumnType("date");
+                    property.SetColumnType("timestamp without time zone");
                 }
                 else
                 {

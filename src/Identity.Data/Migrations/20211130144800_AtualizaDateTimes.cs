@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,22 +11,6 @@ namespace Identity.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AspNetUserLogins");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "UsuarioPermissao",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "UsuarioPermissao",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -44,22 +29,6 @@ namespace Identity.Data.Migrations
                 oldClrType: typeof(string),
                 oldType: "text",
                 oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "UsuarioPerfil",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "UsuarioPerfil",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -142,22 +111,6 @@ namespace Identity.Data.Migrations
                 oldMaxLength: 256,
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "Usuario",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "Usuario",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
                 table: "Usuario",
@@ -166,22 +119,6 @@ namespace Identity.Data.Migrations
                 oldClrType: typeof(string),
                 oldType: "text",
                 oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "PerfilPermissao",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "PerfilPermissao",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -223,22 +160,6 @@ namespace Identity.Data.Migrations
                 oldMaxLength: 256,
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "Perfil",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "Perfil",
-                type: "date",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone");
-
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
                 table: "Perfil",
@@ -276,22 +197,6 @@ namespace Identity.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "UsuarioPermissao",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "UsuarioPermissao",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
                 table: "UsuarioPermissao",
@@ -309,22 +214,6 @@ namespace Identity.Data.Migrations
                 oldClrType: typeof(string),
                 oldType: "varchar(200)",
                 oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "UsuarioPerfil",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "UsuarioPerfil",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -407,22 +296,6 @@ namespace Identity.Data.Migrations
                 oldMaxLength: 256,
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "Usuario",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "Usuario",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",
                 table: "Usuario",
@@ -431,22 +304,6 @@ namespace Identity.Data.Migrations
                 oldClrType: typeof(string),
                 oldType: "varchar(200)",
                 oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "PerfilPermissao",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "PerfilPermissao",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ClaimValue",
@@ -487,22 +344,6 @@ namespace Identity.Data.Migrations
                 oldType: "varchar(200)",
                 oldMaxLength: 256,
                 oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeCriacao",
-                table: "Perfil",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DataDeAtualizacao",
-                table: "Perfil",
-                type: "timestamp without time zone",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "date");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ConcurrencyStamp",

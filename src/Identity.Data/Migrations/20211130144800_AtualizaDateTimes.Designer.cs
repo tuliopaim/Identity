@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211126030608_AtualizaDateTimes")]
+    [Migration("20211130144800_AtualizaDateTimes")]
     partial class AtualizaDateTimes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,10 +35,10 @@ namespace Identity.Data.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -72,10 +72,10 @@ namespace Identity.Data.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
@@ -101,10 +101,10 @@ namespace Identity.Data.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -172,10 +172,10 @@ namespace Identity.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -199,10 +199,10 @@ namespace Identity.Data.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("DataDeAtualizacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("DataDeCriacao")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
