@@ -20,9 +20,11 @@ namespace Identity.API
             services.AddIdentityConfiguration(Configuration);
             services.ResolveDependences();
 
-            services.AddControllers();
+            services.AddControllersWithJsonConfig();
+
             services.AddSwaggerGen(c =>
             {
+                c.SchemaFilter<EnumSchemaFilter>();
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity.API", Version = "v1" });
             });
         }
@@ -54,4 +56,6 @@ namespace Identity.API
             });
         }
     }
+
+
 }
