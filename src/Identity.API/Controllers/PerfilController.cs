@@ -17,8 +17,8 @@ namespace Identity.API.Controllers
             _perfilService = perfilService;
         }
 
-        [ClaimsAuthorize(PermissaoNomeEnum.Perfil, PermissaoValorEnum.C)]
         [HttpPost]
+        [ClaimsAuthorize(PermissaoNomeEnum.Perfil, PermissaoValorEnum.C)]
         public async Task<IActionResult> CriarPerfil(CriarPerfilRequest request)
         {
             await _perfilService.CriarPerfil(request);

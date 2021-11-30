@@ -1,7 +1,10 @@
-﻿using Identity.Business.Entities;
+﻿using Identity.API.Extensions.Attributes;
+using Identity.Business.Entities;
+using Identity.Business.Enumeradores;
 using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Services;
 using Identity.Business.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,24 +13,17 @@ namespace Identity.API.Controllers
     [Route("api/usuario")]
     public class UsuarioController : MainController
     {
-        private readonly SignInManager<Usuario> _signInManager;
-        private readonly UserManager<Usuario> _userManager;
         private readonly IUsuarioService _userService;
-        private readonly IJwtService _jwtService;
 
         public UsuarioController(
-              SignInManager<Usuario> signInManager,
-              UserManager<Usuario> userManager,
               IUsuarioService userService,
-              INotificador notificador, IJwtService jwtService) : base(notificador)
+              INotificador notificador) : base(notificador)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _userService = userService;
-            _jwtService = jwtService;
         }
-
+        
         [HttpPost("registrar")]
+        [ClaimsAuthorize(PermissaoNomeEnum.Usuario, PermissaoValorEnum.C)]
         public async Task<IActionResult> Registrar([FromBody]CriarUsuarioRequest registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -37,6 +33,7 @@ namespace Identity.API.Controllers
             return CustomResponse(registerUser);
         }
 
+        [AllowAnonymous]
         [HttpPost("autenticar")]
         public async Task<IActionResult> Autenticar([FromBody] LoginUsuarioRequest loginUser)
         {
@@ -47,6 +44,7 @@ namespace Identity.API.Controllers
             return CustomResponse(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("alterar-senha")]
         public async Task<IActionResult> AlterarSenha([FromBody] AlterarSenhaRequest alterarSenha)
         {
