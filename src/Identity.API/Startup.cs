@@ -21,12 +21,7 @@ namespace Identity.API
             services.ResolveDependences();
 
             services.AddControllersWithJsonConfig();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SchemaFilter<EnumSchemaFilter>();
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity.API", Version = "v1" });
-            });
+            services.AddSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ISeedData seed, ApplicationDbContext dbContext)
