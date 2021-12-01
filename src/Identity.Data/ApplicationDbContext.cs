@@ -50,9 +50,14 @@ namespace Identity.Data
                 
         public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
         {
+            return (await SaveChangesAsync(cancellationToken)) > 0;
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
             AtualizarDataDeCriacaoAtualizacao();
 
-            return (await SaveChangesAsync(cancellationToken)) > 0;
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         private void AtualizarDataDeCriacaoAtualizacao()
