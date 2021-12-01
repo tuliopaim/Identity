@@ -9,5 +9,21 @@ namespace Identity.Business.Entities
         public virtual ICollection<UsuarioPermissao> UsuarioPermissoes { get; set; }
         public DateTime DataDeCriacao { get; private set; }
         public DateTime DataDeAtualizacao { get; private set; }
+
+        public void AssociarPerfis(List<Guid> perfisId)
+        {
+            UsuarioPerfis ??= new List<UsuarioPerfil>();
+
+            foreach (var perfilId in perfisId)
+            {
+                if (UsuarioPerfis.Any(p => p.RoleId == perfilId)) continue;
+
+                UsuarioPerfis.Add(new UsuarioPerfil()
+                {
+                    UserId = Id,
+                    RoleId = perfilId
+                });
+            }
+        }
     }
 }

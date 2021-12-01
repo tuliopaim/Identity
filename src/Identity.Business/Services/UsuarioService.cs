@@ -1,7 +1,9 @@
 ﻿using Identity.Business.Entities;
 using Identity.Business.Interfaces;
+using Identity.Business.Interfaces.Repositories;
 using Identity.Business.Interfaces.Services;
 using Identity.Business.Requests;
+using Identity.Business.Requests.Usuario;
 using Identity.Business.Response;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,17 +11,20 @@ namespace Identity.Business.Services;
 
 public class UsuarioService : IUsuarioService
 {
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly INotificador _notificador;
     private readonly IJwtService _jwtService;
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
 
     public UsuarioService(
+        IUsuarioRepository usuarioRepository,
         INotificador notificador,
         IJwtService jwtService,
         UserManager<Usuario> userManager,
         SignInManager<Usuario> signInManager)
     {
+        _usuarioRepository = usuarioRepository;
         _notificador = notificador;
         _jwtService = jwtService;
         _userManager = userManager;
@@ -75,8 +80,23 @@ public class UsuarioService : IUsuarioService
             alterarSenhaRequest.CurrentPassword,
             alterarSenhaRequest.NewPassword);
 
-        if(result.Succeeded) return;
+        if (result.Succeeded) return;
 
         _notificador.AdicionarNotificacoes(result.Errors.Select(x => x.Description));
+    }
+
+    public async Task AssociarPerfisAoUsuario(AssociarPerfisUsuarioRequest associarRequest)
+    {
+        var usuario = await _usuarioRepository.ObterUsuarioComPerfis(associarRequest.UsuarioId);
+
+        if (usuario == null)
+        {
+            _notificador.AdicionarNotificacao($"Usuario não encontrado!");
+            return;
+        }
+
+        usuario.AssociarPerfis(associarRequest!.PerfisId!);
+
+        await _usuarioRepository.UnitOfWork.CommitAsync();
     }
 }
