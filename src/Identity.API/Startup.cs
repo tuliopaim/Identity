@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using Identity.API.Extensions;
 using Identity.Business.Interfaces;
 using Identity.Data;
