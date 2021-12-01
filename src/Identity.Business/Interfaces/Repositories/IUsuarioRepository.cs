@@ -1,7 +1,9 @@
-﻿namespace Identity.Business.Interfaces.Repositories
+﻿using Identity.Business.Entities;
+
+namespace Identity.Business.Interfaces.Repositories
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IGenericRepository<Usuario>
     {
-        
+        Task<Usuario?> ObterUsuarioComPerfis(Guid usuarioId);
     }
 }

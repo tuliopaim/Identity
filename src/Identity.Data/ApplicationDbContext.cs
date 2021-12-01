@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Identity.Business.Entities;
+using Identity.Business.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Identity.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Usuario, Perfil, Guid,
-        UsuarioPermissao, UsuarioPerfil, IdentityUserLogin<Guid>, PerfilPermissao, IdentityUserToken<Guid>>
+        UsuarioPermissao, UsuarioPerfil, IdentityUserLogin<Guid>, PerfilPermissao, IdentityUserToken<Guid>>, IUnitOfWork
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -46,12 +47,12 @@ namespace Identity.Data
                 }
             }
         }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+                
+        public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
         {
             AtualizarDataDeCriacaoAtualizacao();
 
-            return base.SaveChangesAsync(cancellationToken);
+            return (await SaveChangesAsync(cancellationToken)) > 0;
         }
 
         private void AtualizarDataDeCriacaoAtualizacao()
