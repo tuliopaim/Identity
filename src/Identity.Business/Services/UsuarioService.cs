@@ -1,4 +1,5 @@
-﻿using Identity.Business.Entities;
+﻿using Identity.Business.Core.UsuarioLogado;
+using Identity.Business.Entities;
 using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Repositories;
 using Identity.Business.Interfaces.Services;
@@ -11,6 +12,7 @@ namespace Identity.Business.Services;
 
 public class UsuarioService : IUsuarioService
 {
+    private readonly IUsuarioLogado _usuarioLogado;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IPerfilRepository _perfilRepository;
     private readonly INotificador _notificador;
@@ -19,6 +21,7 @@ public class UsuarioService : IUsuarioService
     private readonly SignInManager<Usuario> _signInManager;
 
     public UsuarioService(
+        IUsuarioLogado usuarioLogado,
         IUsuarioRepository usuarioRepository,
         IPerfilRepository perfilRepository,
         INotificador notificador,
@@ -26,6 +29,7 @@ public class UsuarioService : IUsuarioService
         UserManager<Usuario> userManager,
         SignInManager<Usuario> signInManager)
     {
+        _usuarioLogado = usuarioLogado;
         _usuarioRepository = usuarioRepository;
         _perfilRepository = perfilRepository;
         _notificador = notificador;
@@ -90,7 +94,7 @@ public class UsuarioService : IUsuarioService
 
     public async Task AssociarPerfisAoUsuario(AssociarPerfisUsuarioRequest associarRequest)
     {
-        if(!associarRequest!.PerfisId!.Any())return;
+        if (!associarRequest!.PerfisId!.Any()) return;
 
         var usuario = await _usuarioRepository.ObterUsuarioComPerfis(associarRequest.UsuarioId);
 
@@ -99,15 +103,25 @@ public class UsuarioService : IUsuarioService
             _notificador.AdicionarNotificacao($"Usuario não encontrado!");
             return;
         }
-        
-        if(await _perfilRepository.ValidarSeAlgumPerfilEhAdmin(associarRequest.PerfisId))
+
+        if (!(await ValidarSePerfisPodemSerAssociados(associarRequest)))
         {
-            _notificador.AdicionarNotificacao($"Não é possivel atribuir o perfil de administrador!");
             return;
         }
-        
+
         usuario.AssociarPerfis(associarRequest!.PerfisId!);
 
         await _usuarioRepository.UnitOfWork.CommitAsync();
+    }
+
+    private async Task<bool> ValidarSePerfisPodemSerAssociados(AssociarPerfisUsuarioRequest associarRequest)
+    {
+        if (await _perfilRepository.ValidarSeAlgumPerfilEhAdmin(associarRequest.PerfisId))
+        {
+            _notificador.AdicionarNotificacao($"Não é possivel atribuir o perfil de administrador!");
+            return false;
+        }
+
+        return true;
     }
 }
