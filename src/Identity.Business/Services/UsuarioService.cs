@@ -124,4 +124,38 @@ public class UsuarioService : IUsuarioService
 
         return true;
     }
+
+    public async Task DesassociarPerfisAoUsuario(DesassociarPerfisUsuarioRequest associarRequest)
+    {
+        if (!associarRequest!.PerfisId!.Any()) return;
+
+        var usuario = await _usuarioRepository.ObterUsuarioComPerfis(associarRequest.UsuarioId);
+
+        if (usuario == null)
+        {
+            _notificador.AdicionarNotificacao($"Usuario não encontrado!");
+            return;
+        }
+
+        if (!(await ValidarSePerfisPodemSerDesassociados(associarRequest)))
+        {
+            return;
+        }
+
+        usuario.DesassociarPerfis(associarRequest!.PerfisId!);
+
+        await _usuarioRepository.UnitOfWork.CommitAsync();
+    }
+
+    private async Task<bool> ValidarSePerfisPodemSerDesassociados(DesassociarPerfisUsuarioRequest associarRequest)
+    {
+        if (await _perfilRepository.ValidarSeAlgumPerfilEhAdmin(associarRequest.PerfisId))
+        {
+            _notificador.AdicionarNotificacao($"Não é possivel atribuir o perfil de administrador!");
+            return false;
+        }
+
+        return true;
+    }
+
 }

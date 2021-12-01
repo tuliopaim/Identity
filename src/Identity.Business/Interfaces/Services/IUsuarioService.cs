@@ -10,5 +10,6 @@ namespace Identity.Business.Interfaces.Services
         Task<LoginResponse?> AutenticarUsuario(LoginUsuarioRequest loginUserRequest);
         Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest);
         Task AssociarPerfisAoUsuario(AssociarPerfisUsuarioRequest associarPerfisRequest);
+        Task DesassociarPerfisAoUsuario(DesassociarPerfisUsuarioRequest associarRequest);
     }
 }

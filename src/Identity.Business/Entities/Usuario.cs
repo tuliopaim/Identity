@@ -25,5 +25,19 @@ namespace Identity.Business.Entities
                 });
             }
         }
+
+        public void DesassociarPerfis(List<Guid> perfisId)
+        {
+            UsuarioPerfis ??= new List<UsuarioPerfil>();
+
+            foreach (var perfilId in perfisId)
+            {
+                var usuarioPerfil = UsuarioPerfis.FirstOrDefault(x => x.RoleId == perfilId);
+
+                if(usuarioPerfil is null) continue;
+
+                UsuarioPerfis.Remove(usuarioPerfil);
+            }
+        }
     }
 }

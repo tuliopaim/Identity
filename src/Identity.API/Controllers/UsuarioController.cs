@@ -65,5 +65,16 @@ namespace Identity.API.Controllers
 
             return CustomResponse();
         }
+
+        [HttpPost("desassociar-perfis")]
+        [ClaimsAuthorize(PermissaoNomeEnum.UsuarioPerfil, PermissaoValorEnum.C)]
+        public async Task<IActionResult> DesassociarPerfis([FromBody]DesassociarPerfisUsuarioRequest desassociarPerfisRequest)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            await _userService.DesassociarPerfisAoUsuario(desassociarPerfisRequest);
+
+            return CustomResponse();
+        }
     }
 }
