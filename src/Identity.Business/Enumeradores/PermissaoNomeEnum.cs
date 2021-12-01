@@ -9,5 +9,9 @@ public enum PermissaoNomeEnum
     /// <summary>
     /// Permissao no contexto de Perfil
     /// </summary>
-    Perfil = 1
+    Perfil = 1,
+    /// <summary>
+    /// Permissão no context de UsuarioPerfil
+    /// </summary>
+    UsuarioPerfil = 2
 }
