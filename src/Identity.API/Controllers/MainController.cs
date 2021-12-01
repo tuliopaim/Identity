@@ -1,5 +1,5 @@
-﻿using Identity.Business.Interfaces;
-using Identity.Business.Notificacoes;
+﻿using Identity.Business.Core.Notificacoes;
+using Identity.Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

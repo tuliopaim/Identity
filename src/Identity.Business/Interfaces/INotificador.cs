@@ -1,4 +1,4 @@
-﻿using Identity.Business.Notificacoes;
+﻿using Identity.Business.Core.Notificacoes;
 
 namespace Identity.Business.Interfaces
 {

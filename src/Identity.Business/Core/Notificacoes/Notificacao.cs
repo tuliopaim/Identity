@@ -1,4 +1,4 @@
-﻿namespace Identity.Business.Notificacoes
+﻿namespace Identity.Business.Core.Notificacoes
 {
     public class Notificacao
     {

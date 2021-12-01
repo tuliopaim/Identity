@@ -1,6 +1,6 @@
 ﻿using Identity.Business.Interfaces;
 
-namespace Identity.Business.Notificacoes
+namespace Identity.Business.Core.Notificacoes
 {
     public class Notificador : INotificador
     {
@@ -10,7 +10,7 @@ namespace Identity.Business.Notificacoes
         {
             _notificacoes = new List<Notificacao>();
         }
-        
+
         public void AdicionarNotificacao(Notificacao notificacao)
         {
             _notificacoes.Add(notificacao);
