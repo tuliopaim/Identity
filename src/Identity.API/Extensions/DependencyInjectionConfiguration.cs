@@ -1,7 +1,8 @@
-﻿using Identity.Business.Interfaces;
+﻿using Identity.Business.Core.Notificacoes;
+using Identity.Business.Core.UsuarioLogado;
+using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Repositories;
 using Identity.Business.Interfaces.Services;
-using Identity.Business.Notificacoes;
 using Identity.Business.Services;
 using Identity.Data;
 using Identity.Data.Repositories;
@@ -12,6 +13,8 @@ namespace Identity.API.Extensions
     {
         public static IServiceCollection ResolveDependences(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddScoped<INotificador, Notificador>();
             services.AddScoped<ISeedData, SeedData>();
             services.AddScoped<IJwtService, JwtService>();
@@ -21,6 +24,8 @@ namespace Identity.API.Extensions
 
             services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+            services.AddScoped<IUsuarioLogado, UsuarioLogado>();
 
             return services;
         }
