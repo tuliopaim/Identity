@@ -1,6 +1,7 @@
 using Identity.API.Extensions;
 using Identity.Business.Interfaces;
 using Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.API
@@ -20,6 +21,8 @@ namespace Identity.API
             services.ResolveDependences();
 
             services.AddControllersWithJsonConfig();
+            services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
+
             services.AddSwagger();
         }
 
