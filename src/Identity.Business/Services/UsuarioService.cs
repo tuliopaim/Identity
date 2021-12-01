@@ -12,6 +12,7 @@ namespace Identity.Business.Services;
 public class UsuarioService : IUsuarioService
 {
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IPerfilRepository _perfilRepository;
     private readonly INotificador _notificador;
     private readonly IJwtService _jwtService;
     private readonly UserManager<Usuario> _userManager;
@@ -19,12 +20,14 @@ public class UsuarioService : IUsuarioService
 
     public UsuarioService(
         IUsuarioRepository usuarioRepository,
+        IPerfilRepository perfilRepository,
         INotificador notificador,
         IJwtService jwtService,
         UserManager<Usuario> userManager,
         SignInManager<Usuario> signInManager)
     {
         _usuarioRepository = usuarioRepository;
+        _perfilRepository = perfilRepository;
         _notificador = notificador;
         _jwtService = jwtService;
         _userManager = userManager;
@@ -87,6 +90,8 @@ public class UsuarioService : IUsuarioService
 
     public async Task AssociarPerfisAoUsuario(AssociarPerfisUsuarioRequest associarRequest)
     {
+        if(!associarRequest!.PerfisId!.Any())return;
+
         var usuario = await _usuarioRepository.ObterUsuarioComPerfis(associarRequest.UsuarioId);
 
         if (usuario == null)
@@ -94,7 +99,13 @@ public class UsuarioService : IUsuarioService
             _notificador.AdicionarNotificacao($"Usuario não encontrado!");
             return;
         }
-
+        
+        if(await _perfilRepository.ValidarSeAlgumPerfilEhAdmin(associarRequest.PerfisId))
+        {
+            _notificador.AdicionarNotificacao($"Não é possivel atribuir o perfil de administrador!");
+            return;
+        }
+        
         usuario.AssociarPerfis(associarRequest!.PerfisId!);
 
         await _usuarioRepository.UnitOfWork.CommitAsync();

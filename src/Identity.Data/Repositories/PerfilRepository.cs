@@ -7,11 +7,8 @@ namespace Identity.Data.Repositories
 {
     public class PerfilRepository : GenericRepository<Perfil>, IPerfilRepository
     {
-        private readonly ApplicationDbContext _context;
-
         public PerfilRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<Perfil?> ObterPerfilComPermissoes(Guid id)
@@ -19,6 +16,16 @@ namespace Identity.Data.Repositories
             return await GetAsNoTracking()
                 .Include(x => x.PerfilPermissoes)
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> ValidarSeAlgumPerfilEhAdmin(List<Guid>? perfisId)
+        {
+            var perfilAdminId = await GetAsNoTracking()
+                .Where(x => x.Name == "admin")
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            return perfisId!.Contains(perfilAdminId);
         }
     }
 }
