@@ -1,11 +1,10 @@
 ﻿using Identity.API.Extensions.Attributes;
-using Identity.Business.Entities;
 using Identity.Business.Enumeradores;
 using Identity.Business.Interfaces;
 using Identity.Business.Interfaces.Services;
 using Identity.Business.Requests;
+using Identity.Business.Requests.Usuario;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.API.Controllers
@@ -52,6 +51,17 @@ namespace Identity.API.Controllers
                 return CustomResponse(ModelState);
 
             await _userService.AlterarSenha(alterarSenha);
+
+            return CustomResponse();
+        }
+
+        [HttpPost("associar-perfis")]
+        [ClaimsAuthorize(PermissaoNomeEnum.UsuarioPerfil, PermissaoValorEnum.C)]
+        public async Task<IActionResult> AssociarPerfis([FromBody]AssociarPerfisUsuarioRequest associarPerfisRequest)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            await _userService.AssociarPerfisAoUsuario(associarPerfisRequest);
 
             return CustomResponse();
         }
