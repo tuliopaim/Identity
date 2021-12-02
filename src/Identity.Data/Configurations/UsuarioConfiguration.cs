@@ -10,6 +10,8 @@ namespace Identity.Data.Configurations
         {
             builder.ToTable(nameof(Usuario));
             
+            builder.HasQueryFilter(u => !u.Removido);
+
             builder
                 .Property(x => x.Nome)
                 .IsRequired()
