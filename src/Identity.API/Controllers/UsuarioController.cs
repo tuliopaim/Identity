@@ -20,10 +20,10 @@ namespace Identity.API.Controllers
         {
             _userService = userService;
         }
-        
+
         [HttpPost("registrar")]
         [ClaimsAuthorize(PermissaoNomeEnum.Usuario, PermissaoValorEnum.C)]
-        public async Task<IActionResult> Registrar([FromBody]CriarUsuarioRequest registerUser)
+        public async Task<IActionResult> Registrar([FromBody] CriarUsuarioRequest registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -57,7 +57,7 @@ namespace Identity.API.Controllers
 
         [HttpPost("associar-perfis")]
         [ClaimsAuthorize(PermissaoNomeEnum.UsuarioPerfil, PermissaoValorEnum.C)]
-        public async Task<IActionResult> AssociarPerfis([FromBody]AssociarPerfisUsuarioRequest associarPerfisRequest)
+        public async Task<IActionResult> AssociarPerfis([FromBody] AssociarPerfisUsuarioRequest associarPerfisRequest)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -68,11 +68,20 @@ namespace Identity.API.Controllers
 
         [HttpPost("desassociar-perfis")]
         [ClaimsAuthorize(PermissaoNomeEnum.UsuarioPerfil, PermissaoValorEnum.C)]
-        public async Task<IActionResult> DesassociarPerfis([FromBody]DesassociarPerfisUsuarioRequest desassociarPerfisRequest)
+        public async Task<IActionResult> DesassociarPerfis([FromBody] DesassociarPerfisUsuarioRequest desassociarPerfisRequest)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             await _userService.DesassociarPerfisAoUsuario(desassociarPerfisRequest);
+
+            return CustomResponse();
+        }
+
+        [HttpDelete("{id:guid}")]
+        [ClaimsAuthorize(PermissaoNomeEnum.Usuario, PermissaoValorEnum.R)]
+        public async Task<IActionResult> Remover(Guid id)
+        {
+            await _userService.RemoverUsuario(id);
 
             return CustomResponse();
         }

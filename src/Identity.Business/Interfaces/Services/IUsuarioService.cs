@@ -11,5 +11,6 @@ namespace Identity.Business.Interfaces.Services
         Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest);
         Task AssociarPerfisAoUsuario(AssociarPerfisUsuarioRequest associarPerfisRequest);
         Task DesassociarPerfisAoUsuario(DesassociarPerfisUsuarioRequest associarRequest);
+        Task RemoverUsuario(Guid id);
     }
 }

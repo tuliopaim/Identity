@@ -40,12 +40,7 @@ public class UsuarioService : IUsuarioService
 
     public async Task RegistrarUsuario(CriarUsuarioRequest registerUserRequest)
     {
-        var user = new Usuario()
-        {
-            Name = registerUserRequest.Name,
-            UserName = registerUserRequest.Email,
-            Email = registerUserRequest.Email,
-        };
+        var user = new Usuario(registerUserRequest.Nome, registerUserRequest.Email);
 
         var result = await _userManager.CreateAsync(user, registerUserRequest.Password);
 
@@ -60,6 +55,15 @@ public class UsuarioService : IUsuarioService
 
     public async Task<LoginResponse?> AutenticarUsuario(LoginUsuarioRequest loginUserRequest)
     {
+        const string emailOuSenhaIncorretos = "Email ou Senha incorretos";
+
+        if(!(await _usuarioRepository.UsuarioAtivo(loginUserRequest.Email)))
+        {
+            _notificador.AdicionarNotificacao(emailOuSenhaIncorretos);
+
+            return null;
+        }
+
         var result = await _signInManager.PasswordSignInAsync(
             loginUserRequest.Email,
             loginUserRequest.Password,
@@ -73,17 +77,22 @@ public class UsuarioService : IUsuarioService
             return jwtResponse;
         }
 
-        _notificador.AdicionarNotificacao("Email ou Senha incorretos");
+        _notificador.AdicionarNotificacao(emailOuSenhaIncorretos);
 
         return null;
     }
 
     public async Task AlterarSenha(AlterarSenhaRequest alterarSenhaRequest)
     {
-        var user = await _userManager.FindByNameAsync(alterarSenhaRequest.Email);
+        var usuario = await _userManager.FindByNameAsync(alterarSenhaRequest.Email);
+        if (usuario == null)
+        {
+            _notificador.AdicionarNotificacao($"Usuario não encontrado!");
+            return;
+        }
 
         var result = await _userManager.ChangePasswordAsync(
-            user,
+            usuario,
             alterarSenhaRequest.CurrentPassword,
             alterarSenhaRequest.NewPassword);
 
@@ -158,4 +167,23 @@ public class UsuarioService : IUsuarioService
         return true;
     }
 
+    public async Task RemoverUsuario(Guid id)
+    {
+        var usuario = await _usuarioRepository.ObterUsuarioPorId(id);
+        if (usuario == null)
+        {
+            _notificador.AdicionarNotificacao($"Usuario não encontrado!");
+            return;
+        }
+
+        if (await _usuarioRepository.UsuarioAdministrador(id))
+        {
+            _notificador.AdicionarNotificacao("Não é possível remover um usuário administrador!");
+            return;
+        }
+
+        usuario.Remover();
+
+        await _usuarioRepository.UnitOfWork.CommitAsync();
+    }
 }
