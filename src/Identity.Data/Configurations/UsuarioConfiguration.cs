@@ -11,7 +11,7 @@ namespace Identity.Data.Configurations
             builder.ToTable(nameof(Usuario));
             
             builder
-                .Property(x => x.Name)
+                .Property(x => x.Nome)
                 .IsRequired()
                 .HasMaxLength(200);
             

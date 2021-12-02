@@ -4,9 +4,21 @@ namespace Identity.Business.Entities
 {
     public class Usuario : IdentityUser<Guid>, IEntidadeBase
     {
-        public string Name { get; set; }
-        public virtual ICollection<UsuarioPerfil> UsuarioPerfis { get; set; }
-        public virtual ICollection<UsuarioPermissao> UsuarioPermissoes { get; set; }
+        protected Usuario()
+        {
+        }
+
+        public Usuario(string nome, string email)
+        {
+            Nome = nome;
+            UserName = Email = email;
+            Removido = false;
+        }
+
+        public string Nome { get; private set; }
+        public bool Removido { get; private set; }
+        public virtual ICollection<UsuarioPerfil> UsuarioPerfis { get; set; } = new List<UsuarioPerfil>();
+        public virtual ICollection<UsuarioPermissao> UsuarioPermissoes { get; set; } = new List<UsuarioPermissao>();
         public DateTime DataDeCriacao { get; private set; }
         public DateTime DataDeAtualizacao { get; private set; }
 
@@ -34,10 +46,12 @@ namespace Identity.Business.Entities
             {
                 var usuarioPerfil = UsuarioPerfis.FirstOrDefault(x => x.RoleId == perfilId);
 
-                if(usuarioPerfil is null) continue;
+                if (usuarioPerfil is null) continue;
 
                 UsuarioPerfis.Remove(usuarioPerfil);
             }
         }
+
+        public void Remover() => Removido = true;
     }
 }

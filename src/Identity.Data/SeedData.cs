@@ -50,21 +50,16 @@ namespace Identity.Data
                 Name = "admin"
             });
 
-            var perfilUsuario = new Perfil
+            await _roleManager.CreateAsync(new Perfil
             {
                 Name = "usuario"
-            };
-
-            await _roleManager.CreateAsync(perfilUsuario);
+            });
         }
 
         private async Task SeedUsuarioAdmin()
         {
-            var usuarioAdmin = new Usuario
+            var usuarioAdmin = new Usuario("admin", "admin@admin.com")
             {
-                Name = "admin",
-                UserName = "admin@admin.com",
-                Email = "admin@admin.com",
                 EmailConfirmed = true
             };
 
